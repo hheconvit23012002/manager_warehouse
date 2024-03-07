@@ -1,0 +1,17 @@
+#star-required{
+    color: red;
+}
+
+body {
+    font-family: 'Montserrat',sans-serif !important;
+    color: black !important;
+    /*font-size: 16px !important;*/
+}
+table{
+    color: black !important;
+
+}
+input {
+    color: black !important;
+}
+
