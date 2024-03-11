@@ -18,4 +18,22 @@ class Order extends Model
         'estimated_delivery_date',
         'status',
     ];
+
+    const STATUS_PENDING = 'status-pending';
+    const STATUS_ACCEPT = 'status-accept';
+    const STATUS_REJECT = 'status-reject';
+
+    public function requester(){
+        return $this->belongsTo(Center::class,'request_id','id');
+    }
+    public function seller(){
+        return $this->belongsTo(Center::class,'seller_id','id');
+    }
+    public function products(){
+        return $this->belongsToMany(Product::class,'order_detail','order_id','product_id')
+            ->withPivot(['price','number','tax']);
+    }
+    public function getRequestNameAttribute(){
+        return ($this->requester ?? "")->name ?? "";
+    }
 }

@@ -15,13 +15,13 @@ class CreateStaffTable extends Migration
     {
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->string('address');
-            $table->string('email');
+            $table->string('name')->nullable();
+            $table->string('code')->nullable()->unique();
+            $table->string('address')->nullable();
+            $table->string('email')->nullable();
             $table->string('position');
-            $table->string('phone_number');
-            $table->date('birth_date');
+            $table->string('phone_number')->nullable();
+            $table->date('birth_date')->nullable();
             $table->string('avatar')->nullable();
             $table->unsignedBigInteger('center_id')->nullable();
             $table->foreign('center_id')->references('id')->on('center');

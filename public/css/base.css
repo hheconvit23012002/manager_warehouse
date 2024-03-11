@@ -9,9 +9,57 @@ body {
 }
 table{
     color: black !important;
+    border: 1px solid black !important;
+}
+table th, table tr, table td {
+    border: 1px solid black !important;
 
 }
 input {
     color: black !important;
+}
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 1031;
+    display: none;
+    animation: overlayAnimation ease-in-out 0.5s;
+}
+
+.nav-cart{
+    position: fixed;
+    z-index: 1032;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    min-width: 80%;
+    /*right: 0;*/
+    display: none;
+    background-color: white;
+    /*padding: 20px;*/
+    /*display: flex;*/
+    flex-direction: column;
+    /*background-color: black;*/
+    animation: overlayAnimation ease-in-out 0.5s;
+    /*transform:  translateX(100%);*/
+    /*transition: -webkit-transform .3s ease-in-out;*/
+    /*transition: transform .3s ease-in-out,-webkit-transform .3s ease-in-out;*/
+}
+
+@keyframes overlayAnimation{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+.side-nav-second-level li:hover{
+    background-color: #1d79fc;
 }
 

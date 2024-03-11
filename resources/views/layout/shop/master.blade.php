@@ -10,10 +10,9 @@
     <!-- App favicon -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="{{ asset('css/app-creative.min.css') }}" rel="stylesheet" type="text/css">
+{{--    <link href="{{ asset('css/app-creative.min.css') }}" rel="stylesheet" type="text/css">--}}
+    <link href="{{ asset('css/shop/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/shop/now-ui-kit.css_v=1.1.0.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/jquery.toast.min.css') }}" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -21,34 +20,31 @@
     @stack('css')
 </head>
 
-<body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+<body class="ecommerce-page" style="color: black!important">
 <!-- Begin page -->
 <div class="wrapper">
     <!-- ========== Left Sidebar Start ========== -->
-    @include('layout.admin.sidebar')
+{{--    @include('layout.shop.sidebar')--}}
     <!-- Left Sidebar End -->
 
     <!-- ============================================================== -->
     <!-- Start Page Content here -->
     <!-- ============================================================== -->
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="content-page">
-        <div class="content">
             <!-- Topbar Start -->
-            @include('layout.admin.header')
+            @include('layout.shop.header')
             <!-- end Topbar -->
 
             <!-- Start Content-->
-            <div class="container-fluid">
+            <div class="container" >
                 @yield('content')
             </div>
             <!-- container -->
-
-        </div>
         <!-- content -->
 
         <!-- Footer Start -->
-        @include('layout.admin.footer')
+        @include('layout.shop.footer')
         <!-- end Footer -->
 
     </div>
@@ -63,14 +59,16 @@
 <!-- END wrapper -->
 
 <!-- Right Sidebar -->
+@include('layout.shop.sidebar')
 <!-- /Right-bar -->
 
 <!-- bundle -->
-<script src="{{ asset('js/vendor.min.js') }}"></script>
+<script src="{{ asset('js/shop/popper.min.js') }}"></script>
 <script src="{{ asset('js/shop/main.js') }}"></script>
-<script src="{{ asset('js/app.min.js') }}"></script>
 <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
-
+<script src="{{ asset('js/shop/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/shop/jasny-bootstrap.min.js') }}"></script>
+{{--<script src="{{ asset('js/shop/now-ui-kit.js_v=1.1.0') }}"></script>--}}
 
 {{--<script src="{{ asset('js/hyper.js') }}"></script>--}}
 {{--<script src="{{ asset('js/layout.js') }}"></script>--}}
@@ -85,6 +83,7 @@
     });
 </script>
 <script src="{{ asset('js/api.js') }}"></script>
+
 @include('common.notification')
 
 @stack('js')

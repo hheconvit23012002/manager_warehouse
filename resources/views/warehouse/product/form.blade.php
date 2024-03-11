@@ -15,7 +15,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h5 class="text-center">Info Staff</h5>
                 @include('common.input-text',[
                     'name' => 'name',
                     'required' => true,
@@ -40,12 +39,6 @@
                     'classParent' => 'form-group row',
                 ])
 
-                @include('common.input-text',[
-                    'name' => 'phone_number',
-                    'required' => true,
-                    'classParent' => 'form-group row',
-                    'type' => 'text'
-                ])
 
 
                 @include('common.input-text',[
@@ -59,20 +52,22 @@
 
                 @include('common.select-box',[
                     'name' => 'category',
-                    'label' => 'Or Admin Center',
-                    'data' => $center ?? [],
+                    'label' => 'Category',
+                    'data' => $categories ?? [],
                     'nameDisplay' => 'name',
                     'nameValue' => 'id',
-                    'id' => 'create_from_center_id'
+                    'id' => 'create_from_category',
+                    'createTag' => true
                 ])
 
                 @include('common.select-box',[
-                    'name' => 'center',
-                    'label' => 'Or Admin Center',
-                    'data' => $center ?? [],
-                    'nameDisplay' => 'name',
+                    'name' => 'tax',
+                    'label' => 'Tax',
+                    'data' => $taxs ?? [],
+                    'nameDisplay' => 'number',
                     'nameValue' => 'id',
-                    'id' => 'create_from_center_id'
+                    'id' => 'create_from_tax',
+                    'createTag' => true
                 ])
 
             </div>

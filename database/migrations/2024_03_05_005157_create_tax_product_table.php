@@ -15,7 +15,7 @@ class CreateTaxProductTable extends Migration
     {
         Schema::create('tax_product', function (Blueprint $table) {
             $table->id();
-            $table->double('number');
+            $table->double('number')->unique();
             $table->unsignedBigInteger('center_id')->nullable();
             $table->foreign('center_id')->references('id')->on('center');
             $table->timestamps();

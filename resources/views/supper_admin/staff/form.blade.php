@@ -30,27 +30,23 @@
 
                 @include('common.input-text',[
                     'name' => 'address',
-                    'required' => true,
                     'classParent' => 'form-group row',
                 ])
 
                 @include('common.input-text',[
                     'name' => 'email',
-                    'required' => true,
                     'classParent' => 'form-group row',
                     'type' => 'email'
                 ])
 
                 @include('common.input-text',[
                     'name' => 'phone_number',
-                    'required' => true,
                     'classParent' => 'form-group row',
                     'type' => 'text'
                 ])
 
                 @include('common.input-text',[
                     'name' => 'birth_date',
-                    'required' => true,
                     'classParent' => 'form-group row',
                     'type' => 'date',
                     'label' => 'Birth date',

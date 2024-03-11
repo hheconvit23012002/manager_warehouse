@@ -17,6 +17,7 @@ class Account extends Authenticatable
         'staff_id',
         'status',
     ];
+
     protected $hidden = [
         'password',
     ];
@@ -26,6 +27,7 @@ class Account extends Authenticatable
     public function staff(){
         return $this->belongsTo(Staff::class,"staff_id","id");
     }
+
 
     public function scopeWithFilter($searchFilter){
 

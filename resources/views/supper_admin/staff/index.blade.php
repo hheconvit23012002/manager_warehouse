@@ -51,7 +51,6 @@
     @include('common.pagination',[
         'data' => $staff
     ])
-
     @include('supper_admin.staff.form',[
         'modalId' => 'create-staff',
         'modalTitle' => 'Create new staff',

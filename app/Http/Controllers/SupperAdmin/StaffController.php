@@ -82,6 +82,7 @@ class StaffController extends Controller
             DB::commit();
             return redirect()->back()->with('success','Success');
         }catch (\Exception $e){
+            dd($e->getMessage());
             File::delete(public_path("storage/" . $path));
             DB::rollBack();
             $error = Str::limit($e->getMessage(),40);

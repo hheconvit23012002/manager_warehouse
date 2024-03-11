@@ -1,11 +1,13 @@
-<table class="table table-centered mb-0">
+<table class="table table-centered mb-0" style="overflow-x: scroll " id="{{ $idTable ?? ""}}">
     <thead>
         <tr>
-            <th>#</th>
+            @if( $usingIndex ?? true )
+                <th>#</th>
+            @endif
             @foreach($field as $head => $value)
                 <th>{{ $head }}</th>
             @endforeach
-            @if(count($actions) > 0 )
+            @if(count($actions ?? []) > 0 )
                 <th>Action</th>
             @endif
         </tr>
@@ -13,8 +15,9 @@
     <tbody>
         @foreach($data as $value)
             <tr>
-
-            <td>{{ $loop->index+1 }}</td>
+            @if( $usingIndex ?? true )
+                <td>{{ $loop->index+1 }}</td>
+            @endif
             @foreach($field as $nameDisplay)
                     @if(str_contains($nameDisplay, 'image'))
                         <td>
@@ -41,15 +44,18 @@
                     @endif
 
             @endforeach
-                <td>
-                    @foreach($actions as $name)
-                        <button class="{{ $name['classButton'] ?? 'btn' }}" id="{{ $name['classButton'] ?? '' }}" data-id="{{ $value->id }}" onclick="{{ isset($name['onclick']) ? $name['onclick'] . '(' .$value->id.')' : '' }}">
-                            <a class="{{ $name['classLink'] ?? 'link' }}" href="{{ ($name['router'] ?? null) ? route($name['router'], $value->id) : '#' }}">
-                                <i class="{{ $name['icon'] }}"></i>
-                            </a>
-                        </button>
-                    @endforeach
-                </td>
+                @if(count($actions ?? []) > 0 )
+                    <td>
+                        @foreach($actions as $name)
+                            <button class="{{ $name['classButton'] ?? 'btn' }}" id="{{ $name['classButton'] ?? '' }}" data-id="{{ $value->id }}" onclick="{{ isset($name['onclick']) ? $name['onclick'] . '(' .$value->id.')' : '' }}">
+                                <a class="{{ $name['classLink'] ?? 'link' }}" href="{{ ($name['router'] ?? null) ? route($name['router'], ['id' => $value->id]) : '#' }}">
+                                    <i class="{{ $name['icon'] }}"></i>
+                                </a>
+                            </button>
+                        @endforeach
+                    </td>
+                @endif
+
             </tr>
 
 

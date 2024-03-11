@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Shop\HomeController;
 use App\Http\Controllers\SupperAdmin\CenterController;
 use App\Http\Controllers\SupperAdmin\StaffController;
-use App\Http\Controllers\WareHourse\ProductController;
+use App\Http\Controllers\WareHouse\ProductController;
+use App\Http\Controllers\WareHouse\RequestController;
+use App\Http\Middleware\CheckHaveLogin;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,10 +22,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class,'login'])->name('login');
 Route::post('/', [AuthController::class,'processLogin'])->name('process_login');
+Route::get('/logout', [AuthController::class,'logout'])->name('logout');
 
 Route::group([
     'prefix' => 'admin',
     'as' => 'admin.',
+    'middleware' => CheckHaveLogin::class
 ], function (){
    Route::group([
        'prefix' => 'web',
@@ -61,5 +66,28 @@ Route::group([
            Route::post('/delete',[ProductController::class,'delete'])->name('delete');
        });
 
+       Route::group([
+           'prefix' => 'request',
+           'as' => 'request.',
+       ],function (){
+           Route::get('/',[RequestController::class,'index'])->name('index');
+           Route::get('/{id}',[RequestController::class,'get'])->name('get');
+           Route::post('/changeStatus',[RequestController::class,'changeStatus'])->name('changeStatus');
+           Route::get('/exportRequestPdf/{id}',[RequestController::class,'exportPdf'])->name('exportRequestPdf');
+       });
    });
 });
+
+Route::group([
+    "prefix" => 'home',
+    'middleware' => CheckHaveLogin::class
+], function (){
+   Route::get("/",[HomeController::class,'index'])->name('home');
+   Route::get("/getInfoCheckOut/{id}",[HomeController::class,'getInfoCheckOut'])->name('getInfoCheckout');
+   Route::post("/addToCart",[HomeController::class,'addToCart'])->name('addToCart');
+   Route::post("/checkout",[HomeController::class,'checkout'])->name('checkout');
+});
+
+Route::get('/error',function (){
+    return "Error";
+})->name('error');

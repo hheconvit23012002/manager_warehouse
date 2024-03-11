@@ -9,7 +9,7 @@
     </label>
     <div class="{{ $classSelect ?? 'col-9 mb-2 p-0' }}">
         <select {{ ($multipleSelect ?? false) ? 'multiple' : '' }} class="custom-select mb-3" id="{{ (($id ?? $name) ?? '') }}" name="{{ $name ?? '' }}">
-            {!! ($required ?? false) ? '' : '<option selected>Select value</option>' !!}
+            {!! ($required ?? false) ? '' : '<option selected value="">Select value</option>' !!}
             @foreach($data as $text => $each)
                 <option value="{{ isset($nameValue) ? ($each->$nameValue ?? $each) ?? '' : $each }}">{{ isset($nameDisplay) ? ($each->$nameDisplay ?? $text )  ?? '' : $text}}</option>
             @endforeach

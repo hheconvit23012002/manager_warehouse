@@ -5,7 +5,7 @@
         $action = [
             'delete' => [
                 'icon' => 'fa-solid fa-trash',
-                'onclick' => 'deleteStaff'
+                'onclick' => 'deleteProduct'
             ],
             'edit' => [
                 'icon' => 'fa-solid fa-pen',
@@ -54,24 +54,24 @@
     @include('warehouse.product.form',[
         'modalId' => 'create-product',
         'modalTitle' => 'Create new product',
-        'router' => 'admin.web.products.store',
+        'router' => 'admin.web.product.store',
         'typeButton' => 'submit'
     ])
 
-{{--    @include('supper_admin.staff.modify',[--}}
-{{--        'modalId' => 'edit-staff',--}}
-{{--        'modalTitle' => 'Edit staff',--}}
-{{--        'router' => 'admin.web.staff.update',--}}
-{{--        'typeButton' => 'submit',--}}
-{{--    ])--}}
+    @include('warehouse.product.modify',[
+        'modalId' => 'edit-product',
+        'modalTitle' => 'Edit product',
+        'router' => 'admin.web.product.update',
+        'typeButton' => 'submit',
+    ])
 
-{{--    @include('supper_admin.staff.delete',[--}}
-{{--        'modalId' => 'delete-staff',--}}
-{{--        'modalTitle' => 'Delete staff',--}}
-{{--        'router' => 'admin.web.staff.delete',--}}
-{{--        'typeButton' => 'submit',--}}
-{{--    ])--}}
+    @include('warehouse.product.delete',[
+        'modalId' => 'delete-product',
+        'modalTitle' => 'Delete product',
+        'router' => 'admin.web.product.delete',
+        'typeButton' => 'submit',
+    ])
 @endsection
 @push('js')
-    <script src="{{ asset('js/staff/staff.js') }}"></script>
+    <script src="{{ asset('js/product.js') }}"></script>
 @endpush

@@ -8,6 +8,7 @@ use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -30,23 +31,34 @@ class AuthController extends Controller
                 throw new \Exception('Login failed');
             }
 
+
             $user->position = $user->staff->position;
             $user->centerId = $user->staff->center_id;
+            $user->avatar = $user->staff->avatar;
 
             if (isset($user)) {
-                Auth::login($user);
+                Session::put("user", $user);
+//                Auth::login($user);
             }
 
-            if(\auth()->user()->position === Staff::POSITION_ADMIN_WAREHOUSE){
+            if($user->position === Staff::POSITION_ADMIN_WAREHOUSE){
                 return redirect()->route("admin.web.product.index");
-            }else if(\auth()->user()->position === Staff::POSITION_ADMIN_SHOP){
-                dd(2);
-//                return redirect()->route("admin.web.sh");
-            }else if(\auth()->user()->position === Staff::POSITION_SUPPER_ADMIN){
+            }else if($user->position === Staff::POSITION_ADMIN_SHOP){
+                return redirect()->route("home");
+            }else if($user->position === Staff::POSITION_SUPPER_ADMIN){
                 return redirect()->route("admin.web.staff.index");
             }
         }catch(\Exception $e){
             return redirect()->back()->with("error", "Login failed");
+        }
+    }
+
+    public function logout(){
+        try {
+            Session::forget('user');
+            return redirect()->route('login');
+        }catch (\Exception $e){
+            return redirect()->route("error");
         }
     }
     //

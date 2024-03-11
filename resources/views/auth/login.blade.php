@@ -40,7 +40,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input name="username" class="form-control" type="text" id="username" required="" placeholder="Enter your username">
+                                <input name="username" class="form-control" type="text" id="username" value="{{ old('username') }}" required="" placeholder="Enter your username">
                             </div>
 
                             <div class="form-group">
@@ -83,6 +83,6 @@
 <script src="{{ asset('js/vendor.min.js') }}"></script>
 <script src="{{ asset('js/app.min.js') }}"></script>
 <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
-
+@include('common.notification')
 </body>
 </html>

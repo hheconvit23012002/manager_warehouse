@@ -15,8 +15,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="staff_id" id="staff_id" >
-                <h5 class="text-center">Info Staff</h5>
+                <input type="hidden" name="product_id" id="product_id" >
                 @include('common.input-text',[
                     'name' => 'name',
                     'required' => true,
@@ -30,35 +29,21 @@
                 ])
 
                 @include('common.input-text',[
-                    'name' => 'address',
+                    'name' => 'measurement_unit',
                     'required' => true,
                     'classParent' => 'form-group row',
                 ])
 
                 @include('common.input-text',[
-                    'name' => 'email',
+                    'name' => 'price',
                     'required' => true,
                     'classParent' => 'form-group row',
-                    'type' => 'email'
                 ])
 
-                @include('common.input-text',[
-                    'name' => 'phone_number',
-                    'required' => true,
-                    'classParent' => 'form-group row',
-                    'type' => 'text'
-                ])
+
 
                 @include('common.input-text',[
-                    'name' => 'birth_date',
-                    'required' => true,
-                    'classParent' => 'form-group row',
-                    'type' => 'date',
-                    'label' => 'Birth date',
-                ])
-
-                @include('common.input-text',[
-                    'name' => 'avatar',
+                    'name' => 'image',
                     'classParent' => 'form-group row',
                     'classInput' => 'col-9 p-0',
                     'type' => 'file',
@@ -66,37 +51,26 @@
                     'change' => 'changeFile(this)'
                 ])
 
-                @include('common.input-text',[
-                    'name' => 'supper_admin',
-                    'label' => 'Super Admin',
-                    'type' => 'checkbox',
-                    'classParent' => 'form-group row',
+                @include('common.select-box',[
+                    'name' => 'category',
+                    'label' => 'Category',
+                    'data' => $categories ?? [],
+                    'nameDisplay' => 'name',
+                    'nameValue' => 'id',
+                    'id' => 'edit_from_category',
+                    'createTag' => true
                 ])
 
                 @include('common.select-box',[
-                    'name' => 'center',
-                    'label' => 'Or Admin Center',
-                    'data' => $center ?? [],
-                    'nameDisplay' => 'name',
+                    'name' => 'tax',
+                    'label' => 'Tax',
+                    'data' => $taxs ?? [],
+                    'nameDisplay' => 'number',
                     'nameValue' => 'id',
-                    'id' => 'edit_from_center_id'
+                    'id' => 'edit_from_tax',
+                    'createTag' => true
                 ])
 
-
-                <h5 class="text-center">Info Account</h5>
-
-                @include('common.input-text',[
-                    'name' => 'username',
-                    'required' => true,
-                    'classParent' => 'form-group row',
-                ])
-
-
-                @include('common.input-text',[
-                    'name' => 'password',
-                    'required' => true,
-                    'classParent' => 'form-group row',
-                ])
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

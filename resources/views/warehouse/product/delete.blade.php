@@ -15,8 +15,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="staff_id" id="staff_id" >
-                <span>Confirm delete staff</span>
+                <input type="hidden" name="product_id" id="product_id" >
+                <span>Confirm delete product</span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
