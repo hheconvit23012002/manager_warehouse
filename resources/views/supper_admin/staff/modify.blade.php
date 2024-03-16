@@ -30,12 +30,6 @@
                 ])
 
                 @include('common.input-text',[
-                    'name' => 'address',
-                    'required' => true,
-                    'classParent' => 'form-group row',
-                ])
-
-                @include('common.input-text',[
                     'name' => 'email',
                     'required' => true,
                     'classParent' => 'form-group row',
@@ -49,22 +43,6 @@
                     'type' => 'text'
                 ])
 
-                @include('common.input-text',[
-                    'name' => 'birth_date',
-                    'required' => true,
-                    'classParent' => 'form-group row',
-                    'type' => 'date',
-                    'label' => 'Birth date',
-                ])
-
-                @include('common.input-text',[
-                    'name' => 'avatar',
-                    'classParent' => 'form-group row',
-                    'classInput' => 'col-9 p-0',
-                    'type' => 'file',
-                    'displayImage' => true,
-                    'change' => 'changeFile(this)'
-                ])
 
                 @include('common.input-text',[
                     'name' => 'supper_admin',

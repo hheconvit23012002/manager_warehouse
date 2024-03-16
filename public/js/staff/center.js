@@ -1,13 +1,12 @@
 
 async function openModalEdit(id) {
-    // $("#edit-center #name").val(data.name)
     let response = await api.getCenterById({id})
     if(Object.keys(response).length !== 0){
         let data = response.data;
         $("#edit-center").modal('show')
         $("#edit-center #name").val(data.name)
         $("#edit-center #center_id").val(id)
-        $("#edit-center #code").val(data.code)
+        $("#edit-center #code").val(data.zip_code)
         $("#edit-center #address").val(data.address)
         $("#edit-center #address2").val(data.address2)
         $("#edit-center #email").val(data.email)

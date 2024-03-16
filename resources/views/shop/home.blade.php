@@ -75,18 +75,39 @@
                                     </div>
                                     <div class="card-body">
                                         <a href="#">
-                                            <h4 class="">{{ $product->name }}</h4>
+                                            <h4 class="" style="font-weight: 700">Name : {{ $product->name }}</h4>
                                         </a>
                                         <p class="">
-                                            Category: {{ $product->category_name }}
+                                            Code : {{ $product->code}}
                                         </p>
-                                        <div class="card-footer d-flex flex-row justify-content-between">
-                                            <div class="price-container">
+                                        <p class="">
+                                            Number : {{ $product->number}}
+                                        </p>
+                                        <p class="">
+                                            Estimate ship : {{ $product->estimate }}
+                                        </p>
+                                        <div class="card-footer row">
+                                            <div class="price-container col-4">
                                                 <span class=""> € {{ $product->price }}</span>
                                             </div>
-                                            <button class="nav-link btn btn-primary p-2" onclick="addToCart({{$product->id}}, {{ $centerId }})">
-                                                Add to cart
-                                            </button>
+                                            <div class="col-8">
+                                                <div class="{{ !empty($product->hasAdd) ? 'd-flex float-right' : 'd-none' }} ">
+                                                    <button class="nav-link btn btn-primary p-2 " onclick="changeCart(this, {{$product->id}}, {{ $centerId }}, -1)">
+                                                        <i class="fa-solid fa-minus"></i>
+                                                    </button>
+                                                    <input type="number"  value="{{ $product->hasAdd }}" class="form-control " style="width: 80px" onchange="enterNumberProduct(this, {{$product->id}}, {{ $centerId }})">
+                                                    <button class="nav-link btn btn-primary p-2" onclick="changeCart(this, {{$product->id}}, {{ $centerId }}, 1)">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="{{ !is_null($product->hasAdd) ? 'd-none' : 'float-right' }} ">
+                                                    <button class="nav-link btn btn-primary p-2 " onclick="changeCart(this, {{$product->id}}, {{ $centerId }}, 1)">
+                                                        Add to cart
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                 </div>

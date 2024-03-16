@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckHaveLogin
 {
@@ -16,7 +17,7 @@ class CheckHaveLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        $userLogin = \session()->get('user');
+        $userLogin = Auth::user();
         if(is_null($userLogin)){
             return redirect()->route('login')->with('error','you must login');
         }

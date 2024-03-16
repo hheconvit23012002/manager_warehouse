@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Staff;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class CreateStaffTable extends Migration
@@ -17,17 +19,23 @@ class CreateStaffTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable()->unique();
-            $table->string('address')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->string('position');
             $table->string('phone_number')->nullable();
-            $table->date('birth_date')->nullable();
-            $table->string('avatar')->nullable();
+            $table->string('username')->unique();
+            $table->string('password');
+            $table->string('status');
             $table->unsignedBigInteger('center_id')->nullable();
             $table->foreign('center_id')->references('id')->on('center');
             $table->softDeletes();
             $table->timestamps();
         });
+        Staff::create([
+            'position' => Staff::POSITION_SUPPER_ADMIN,
+            'username' => 'spadmin',
+            'password' => Hash::make(1),
+            'status' => Staff::STATUS_ACTIVE
+        ]);
     }
 
     /**

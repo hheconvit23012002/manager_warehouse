@@ -39,7 +39,7 @@ class CenterController extends Controller
 
             Center::create([
                 'name'=> $request->get('name'),
-                'code'=> $request->get('code'),
+                'zip_code'=> $request->get('code'),
                 'address'=> $request->get('address'),
                 'address2'=> $request->get('address2'),
                 'email'=> $request->get('email'),
@@ -78,7 +78,7 @@ class CenterController extends Controller
             $centerId = $request->get('center_id');
             $dataUpdate = [
                 'name'=> $request->get('name'),
-                'code'=> $request->get('code'),
+                'zip_code'=> $request->get('code'),
                 'address'=> $request->get('address'),
                 'address2'=> $request->get('address2'),
                 'email'=> $request->get('email'),

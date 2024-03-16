@@ -101,17 +101,43 @@ let api = {
         }
         return rs;
     },
-    addToCart  : async (prop) => {
-        const {product_id, seller_id} = prop
+    changeCart  : async (prop) => {
+        const {product_id, seller_id, number} = prop
         let rs = {}
         try{
             await $.ajax({
-                url: `${baseUrl}home/addToCart`,
+                url: `${baseUrl}home/changeCart`,
                 type: 'POST',
                 dataType: 'json',
                 data : {
                     'product_id' : product_id,
-                    'seller_id' : seller_id
+                    'seller_id' : seller_id,
+                    'number' : number
+                },
+                success: function (response) {
+                    rs = response
+                },
+                error: function (response) {
+                    // console.log(response);
+                }
+            })
+        }catch(e){
+
+        }
+        return rs;
+    },
+    enterNumberProduct  : async (prop) => {
+        const {product_id, seller_id, number} = prop
+        let rs = {}
+        try{
+            await $.ajax({
+                url: `${baseUrl}home/enterNumberProduct`,
+                type: 'POST',
+                dataType: 'json',
+                data : {
+                    'product_id' : product_id,
+                    'seller_id' : seller_id,
+                    'number' : number
                 },
                 success: function (response) {
                     rs = response

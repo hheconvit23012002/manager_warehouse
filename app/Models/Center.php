@@ -12,7 +12,7 @@ class Center extends Model
     protected $table="center";
     protected $fillable = [
         'name',
-        'code',
+        'zip_code',
         'address',
         'address2',
         'type',

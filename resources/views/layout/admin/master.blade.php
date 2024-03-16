@@ -20,7 +20,10 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('css')
 </head>
-
+    @php
+        use Illuminate\Support\Facades\Auth;
+        $userLogin = Auth::user();
+    @endphp
 <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
 <!-- Begin page -->
 <div class="wrapper">
@@ -67,7 +70,7 @@
 
 <!-- bundle -->
 <script src="{{ asset('js/vendor.min.js') }}"></script>
-<script src="{{ asset('js/shop/main.js') }}"></script>
+{{--<script src="{{ asset('js/shop/main.js') }}"></script>--}}
 <script src="{{ asset('js/app.min.js') }}"></script>
 <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
 

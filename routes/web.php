@@ -4,9 +4,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Shop\HomeController;
 use App\Http\Controllers\SupperAdmin\CenterController;
 use App\Http\Controllers\SupperAdmin\StaffController;
+use App\Http\Controllers\WareHouse\HistoryAddNumberProductController;
 use App\Http\Controllers\WareHouse\ProductController;
 use App\Http\Controllers\WareHouse\RequestController;
 use App\Http\Middleware\CheckHaveLogin;
+use App\Models\HistoryAddNumberProduct;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +66,9 @@ Route::group([
            Route::post('/store',[ProductController::class,'store'])->name('store');
            Route::post('/update',[ProductController::class,'update'])->name('update');
            Route::post('/delete',[ProductController::class,'delete'])->name('delete');
+           Route::get('/history/add',[HistoryAddNumberProductController::class,'index'])->name('history');
+           Route::post('/history/add',[HistoryAddNumberProductController::class,'addNumberProduct'])->name('addNumberProduct');
+
        });
 
        Route::group([
@@ -84,7 +89,8 @@ Route::group([
 ], function (){
    Route::get("/",[HomeController::class,'index'])->name('home');
    Route::get("/getInfoCheckOut/{id}",[HomeController::class,'getInfoCheckOut'])->name('getInfoCheckout');
-   Route::post("/addToCart",[HomeController::class,'addToCart'])->name('addToCart');
+   Route::post("/changeCart",[HomeController::class,'changeCart'])->name('changeCart');
+   Route::post("/enterNumberProduct",[HomeController::class,'enterNumberProduct'])->name('enterNumberProduct');
    Route::post("/checkout",[HomeController::class,'checkout'])->name('checkout');
 });
 

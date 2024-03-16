@@ -34,7 +34,7 @@
                 @include('common.table',[
                     'field' => [
                         'Logo' => 'image_logo',
-                        'Code' => 'code',
+                        'Zip code' => 'zip_code',
                         'Name'=>'name',
                         'Email' => 'email',
                         'Address' => 'address_detail',

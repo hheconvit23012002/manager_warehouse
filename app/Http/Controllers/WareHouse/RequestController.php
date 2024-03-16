@@ -7,8 +7,10 @@ use App\Http\Controllers\Traits\ResponseTrait;
 use App\Models\Cart;
 use App\Models\Center;
 use App\Models\Order;
+use App\Models\Staff;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -18,9 +20,14 @@ class RequestController extends Controller
     //
     public function index(Request $request){
         try {
-            $userLogin = \session()->get("user");
+            $userLogin = Auth::user();
             $sellerId = $userLogin->centerId;
-            $requests = Order::with('products','requester')->where('seller_id', $sellerId)
+            $requestQuery = Order::with('products','requester');
+            if($userLogin->position === Staff::POSITION_ADMIN_WAREHOUSE){
+                $requestQuery = $requestQuery->where('seller_id', $sellerId);
+            }
+
+            $requests = $requestQuery
                 ->paginate(15);
             return view('warehouse.request.index',[
                     'requests' => $requests,
@@ -48,8 +55,6 @@ class RequestController extends Controller
     public function changeStatus(Request $request){
         try {
             DB::beginTransaction();
-            $userLogin = \session()->get("user");
-            $sellerId = $userLogin->centerId;
             $requestId = $request->get('request_id');
             $dataUpdate= [
                 'shipping_address' => $request->get('shipping_address'),
@@ -62,7 +67,7 @@ class RequestController extends Controller
             }else{
                 $dataUpdate['status'] = Order::STATUS_ACCEPT;
             }
-            Order::where('id', $requestId)->where('seller_id',$sellerId)->update($dataUpdate);
+            Order::where('id', $requestId)->update($dataUpdate);
             DB::commit();
             return redirect()->back()->with('success','success');
         }catch (\Exception $e){
@@ -74,10 +79,7 @@ class RequestController extends Controller
 
     public function exportPdf(Request $request, $orderId){
         try {
-            $userLogin = \session()->get("user");
-            $sellerId = $userLogin->centerId;
             $order = Order::with('products')
-                ->where('seller_id',$sellerId)
                 ->where('id', $orderId)->firstOrFail();
             $pdf = Pdf::loadView('warehouse.request.exportPdf', [
                 'order' => $order

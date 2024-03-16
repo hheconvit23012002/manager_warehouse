@@ -15,7 +15,7 @@ class CreateCenterTable extends Migration
     {
         Schema::create('center', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('zip_code')->unique();
             $table->string('name');
             $table->string('address')->nullable();
             $table->string('address2')->nullable();

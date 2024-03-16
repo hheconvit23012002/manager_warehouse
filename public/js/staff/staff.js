@@ -12,7 +12,7 @@ async function openModalEdit(id) {
         $("#edit-staff #phone_number").val(data.phone_number)
         $("#edit-staff #birth_date").val(data.birth_date)
         $("#edit-staff #edit_from_center_id").val(data.center_id).trigger("change")
-        $("#edit-staff #username").val(data.account.username)
+        $("#edit-staff #username").val(data.username)
         $("#edit-staff #staff_id").val(id)
         $("#edit-staff #password").attr("required",false)
         $("#edit-staff #supper_admin").prop("checked", data.position === supper_admin)

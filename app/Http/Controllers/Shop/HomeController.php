@@ -11,6 +11,8 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -18,16 +20,30 @@ class HomeController extends Controller
 {
     use ResponseTrait;
     public function index(Request $request){
+        $userLogin = Auth::user();
         $categoryIds = $request->get("category") ?? [];
         $centerId = $request->get("center_id") ?? null;
         if(is_null($centerId)){
             $categoryIds = [];
         }
-        $products = Product::beLongsToCenter($centerId)
-            ->whereIn('category_id', $categoryIds)
-            ->get();
+        $productQuery = Product::beLongsToCenter($centerId);
+        if(count($categoryIds) > 0 ){
+            $productQuery = $productQuery->whereIn('category_id', $categoryIds);
+        }
+        $products = $productQuery->get();
         $centers = Center::where("type" ,Center::TYPE_WAREHOUSE)->get();
         $categories = Category::beLongsToCenter($centerId)->get();
+        $cart = Cart::with('products')
+            ->where('seller_id', $centerId)
+            ->where('request_id', $userLogin->center_id)
+            ->first();
+        $productHasAdd = ($cart->products ?? new Collection())->pluck('id')->toArray() ;
+        foreach ($products as $product){
+            if(in_array($product->id, $productHasAdd)){
+                $productPivot = $cart->products->where('id', $product->id)->first();
+                $product->hasAdd = $productPivot->pivot->number;
+            }
+        }
         return view('shop.home',compact(
             'centers',
             'categories',
@@ -36,22 +52,49 @@ class HomeController extends Controller
         ));
     }
 
-    public function addToCart(Request $request){
+    public function changeCart(Request $request){
         try {
             DB::beginTransaction();
-            $userLogin = \session()->get('user');
-            $requestId = $userLogin->centerId;
+            $userLogin = Auth::user();
+            $requestId = $userLogin->center_id;
             $productId = $request->get('product_id');
+            $number = $request->get('number');
             $sellerId = $request->get('seller_id');
 
             $cart = Cart::firstOrCreate([
                     'seller_id' => $sellerId,
                     'request_id' => $requestId,
                 ]);
-            $cart->addToCart($productId);
+            $number = $cart->changeCart($productId, $number);
             DB::commit();
-            return $this->successResponse([],'Cart added successfully');
+            return $this->successResponse([
+                'number' => $number
+            ],'Cart added successfully');
         }catch (\Exception $e){
+            DB::rollBack();
+            $error = Str::limit($e->getMessage(),40);
+            return $this->errorResponse($error);
+        }
+    }
+
+    public function enterNumberProduct(Request $request){
+        try {
+            DB::beginTransaction();
+            $userLogin = Auth::user();
+            $requestId = $userLogin->center_id;
+            $productId = $request->get('product_id');
+            $number = $request->get('number');
+            $sellerId = $request->get('seller_id');
+            $cart = Cart::where('seller_id', $sellerId)->where('request_id', $requestId)
+                ->firstOrFail();
+
+            $number = $cart->enterNumberProduct($productId, $number);
+            DB::commit();
+            return $this->successResponse([
+                'number' => $number
+            ],'Cart added successfully');
+        }catch (\Exception $e){
+            dd($e);
             DB::rollBack();
             $error = Str::limit($e->getMessage(),40);
             return $this->errorResponse($error);

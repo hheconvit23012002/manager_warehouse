@@ -2,9 +2,7 @@
 
     @php
 
-        use App\Models\Staff;
-        $userLogin = \session()->get('user');
-        $superAdmin = [
+        use App\Models\Staff;$superAdmin = [
             [
                 'name' => 'Staff',
                 'route' => 'admin.web.staff.index',
@@ -22,6 +20,10 @@
             [
                 'name' => 'Request',
                 'route' => 'admin.web.request.index',
+            ],
+            [
+                'name' => 'Add Number',
+                'route' => 'admin.web.product.history',
             ],
         ]
     @endphp
@@ -54,13 +56,12 @@
                                 <a href="{{ route($nav['route']) }}">{{ $nav['name'] }}</a>
                             </li>
                         @endforeach
-                    @elseif($userLogin->position === Staff::POSITION_ADMIN_WAREHOUSE)
-                        @foreach($warehouse as $nav)
-                            <li>
-                                <a href="{{ route($nav['route']) }}">{{ $nav['name'] }}</a>
-                            </li>
-                        @endforeach
                     @endif
+                    @foreach($warehouse as $nav)
+                        <li>
+                            <a href="{{ route($nav['route']) }}">{{ $nav['name'] }}</a>
+                        </li>
+                    @endforeach
 
                 </ul>
             </li>

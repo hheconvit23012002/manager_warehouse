@@ -25,12 +25,13 @@ class CreateProductTable extends Migration
             $table->unsignedBigInteger('created_id');
             $table->unsignedBigInteger('tax_id');
             $table->unsignedBigInteger('center_id');
+            $table->timestamp('estimated_delivery')->nullable();
             $table->foreign('category_id')->references('id')->on('category');
-            $table->foreign('created_id')->references('id')->on('account');
+            $table->foreign('created_id')->references('id')->on('staff');
             $table->foreign('tax_id')->references('id')->on('tax_product');
             $table->foreign('center_id')->references('id')->on('center');
             $table->softDeletes();
-//            $table->integer('number');
+            $table->integer('number')->nullable()->default(0);
             $table->timestamps();
         });
     }

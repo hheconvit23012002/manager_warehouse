@@ -1,5 +1,10 @@
+@php use App\Models\Staff;use Illuminate\Support\Facades\Auth; @endphp
 @extends('layout.admin.master')
 
+
+@php
+    $userLogin = Auth::user();
+@endphp
 @section('content')
     @php
         $action = [
@@ -31,8 +36,8 @@
     <div class="card">
         <div class="card-body">
             <div class="tab-content">
-                @include('common.table',[
-                    'field' => [
+                @php
+                    $fields = [
                         'Image' => 'image',
                         'Code' => 'code',
                         'Name' => 'name',
@@ -40,7 +45,13 @@
                         'Price' => 'price',
                         'Category' => 'category_name',
                         'Tax' => 'tax_number',
-                    ],
+                    ];
+                    if($userLogin->position === Staff::POSITION_SUPPER_ADMIN){
+                        $fields['center'] = 'center_name';
+                    }
+                @endphp
+                @include('common.table',[
+                    'field' => $fields,
                     'data' => $products,
                     'actions' => $action
                 ])

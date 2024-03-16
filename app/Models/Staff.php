@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Staff extends Model
+class Staff extends Authenticatable
 {
     use HasFactory,SoftDeletes;
     protected $table="staff";
@@ -17,10 +18,14 @@ class Staff extends Model
         'email',
         'position',
         'phone_number',
-        'birth_date',
         'center_id',
-        'avatar'
+        'username',
+        'password',
+        'status',
     ];
+
+    const STATUS_ACTIVE = 'active';
+    const STATUS_BLOCK = 'block';
 
     const POSITION_SUPPER_ADMIN = 'Super admin';
     const POSITION_ADMIN_WAREHOUSE = 'Admin warehouse';
@@ -34,9 +39,6 @@ class Staff extends Model
         return $this->belongsTo(Center::class,'center_id','id');
     }
 
-    public function account(){
-        return $this->hasOne(Account::class,'staff_id','id');
-    }
     public function getNameCenterAttribute(){
         return $this->center->name ?? "unknown";
     }

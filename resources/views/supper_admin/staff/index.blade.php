@@ -33,14 +33,12 @@
             <div class="tab-content">
                 @include('common.table',[
                     'field' => [
-                        'Avatar' => 'image_avatar',
                         'Code' => 'code',
                         'Name'=>'name',
                         'Email' => 'email',
-                        'Address' => 'address',
                         'Phone number' => 'phone_number',
-                        'Birth date' => 'birth_date',
                         'Center' => 'name_center',
+                        'username' => 'username',
                     ],
                     'data' => $staff,
                     'actions' => $action

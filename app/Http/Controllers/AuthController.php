@@ -25,20 +25,15 @@ class AuthController extends Controller
         try {
             $username = $request->get("username");
             $password = $request->get("password");
-            $user = Account::with("staff")->where('username', $username)
+            $user = Staff::where('username', $username)
                 ->firstOrFail();
             if (!Hash::check($password, $user->password) || $user->status === Account::STATUS_BLOCK) {
                 throw new \Exception('Login failed');
             }
 
 
-            $user->position = $user->staff->position;
-            $user->centerId = $user->staff->center_id;
-            $user->avatar = $user->staff->avatar;
-
             if (isset($user)) {
-                Session::put("user", $user);
-//                Auth::login($user);
+                Auth::login($user);
             }
 
             if($user->position === Staff::POSITION_ADMIN_WAREHOUSE){
@@ -55,7 +50,7 @@ class AuthController extends Controller
 
     public function logout(){
         try {
-            Session::forget('user');
+            Auth::logout();
             return redirect()->route('login');
         }catch (\Exception $e){
             return redirect()->route("error");

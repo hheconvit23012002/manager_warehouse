@@ -1,3 +1,4 @@
+@php use App\Models\Staff; @endphp
 <div class="modal fade" id="{{ $modalId ?? '' }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -15,7 +16,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="product_id" id="product_id" >
+                <input type="hidden" name="product_id" id="product_id">
                 @include('common.input-text',[
                     'name' => 'name',
                     'required' => true,
@@ -40,7 +41,12 @@
                     'classParent' => 'form-group row',
                 ])
 
-
+                @include('common.input-text',[
+                    'name' => 'estimated_delivery',
+                    'label' => 'Estimated (day)',
+                    'classParent' => 'form-group row',
+                    'type' => 'number',
+                ])
 
                 @include('common.input-text',[
                     'name' => 'image',
@@ -50,6 +56,17 @@
                     'displayImage' => true,
                     'change' => 'changeFile(this)'
                 ])
+
+                @if(Auth::user()->position === Staff::POSITION_SUPPER_ADMIN)
+                    @include('common.select-box',[
+                        'name' => 'center_id',
+                        'label' => 'Center',
+                        'data' => $centers ?? [],
+                        'nameDisplay' => 'name',
+                        'nameValue' => 'id',
+                        'id' => 'select_center_edit',
+                    ])
+                @endif
 
                 @include('common.select-box',[
                     'name' => 'category',

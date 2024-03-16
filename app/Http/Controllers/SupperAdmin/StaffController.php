@@ -34,16 +34,11 @@ class StaffController extends Controller
     }
 
     public function store(Request $request){
-        $path = '';
 
         try {
             DB::beginTransaction();
-            $avatar = $request->file('avatar');
             $password = $request->get('password') ?? '';
             $spAdmin = $request->get('supper_admin') ?? null;
-            if(isset($avatar)){
-                $path = Storage::disk('public')->putFile("avatar",$avatar);
-            }
             $centerId = $request->get('center');
             $center = Center::where('id', $centerId)->first();
             $position = '';
@@ -63,27 +58,18 @@ class StaffController extends Controller
             $staff = Staff::create([
                 'name'=> $request->get('name'),
                 'code'=> $request->get('code'),
-                'address'=> $request->get('address'),
                 'email'=> $request->get('email'),
                 'position' => $position,
                 'phone_number'=> $request->get('phone_number'),
-                'birth_date'=> $request->get('birth_date'),
-                'avatar'=> $path,
                 'center_id' => $centerId,
-            ]);
-
-            Account::create([
-                'staff_id' => $staff->id,
                 'username' => $request->get('username'),
                 'password' => Hash::make($password),
-                'status' => Account::STATUS_ACTIVE,
+                'status' => Staff::STATUS_ACTIVE,
             ]);
 
             DB::commit();
             return redirect()->back()->with('success','Success');
         }catch (\Exception $e){
-            dd($e->getMessage());
-            File::delete(public_path("storage/" . $path));
             DB::rollBack();
             $error = Str::limit($e->getMessage(),40);
             return redirect()->back()->with('error','Create fail :'.$error );
@@ -92,7 +78,7 @@ class StaffController extends Controller
 
     public function get(Request $request,$staffId){
         try {
-            $staff = Staff::with("account")->findOrFail($staffId);
+            $staff = Staff::findOrFail($staffId);
             return $this->successResponse($staff, 'get_success');
         }catch (\Exception $e){
             return $this->errorResponse('error',500);
@@ -105,9 +91,6 @@ class StaffController extends Controller
         try {
             DB::beginTransaction();
             $staffId = $request->get('staff_id');
-            $staff = Staff::with("account")->findOrFail($staffId);
-            $pathOld = $staff->avatar;
-            $avatar = $request->file('avatar');
             $password = $request->get('password') ?? '';
             $spAdmin = $request->get('supper_admin') ?? null;
             $centerId = $request->get('center');
@@ -129,36 +112,22 @@ class StaffController extends Controller
             $dataUpdate = [
                 'name'=> $request->get('name'),
                 'code'=> $request->get('code'),
-                'address'=> $request->get('address'),
                 'email'=> $request->get('email'),
                 'position' => $position,
                 'phone_number'=> $request->get('phone_number'),
-                'birth_date'=> $request->get('birth_date'),
                 'center_id' => $centerId,
-            ];
-            if(isset($avatar)){
-                $path = Storage::disk('public')->putFile("avatar",$avatar);
-                $dataUpdate['avatar'] = $path;
-            }
-
-
-            Staff::where('id', $staffId)->update($dataUpdate);
-            $dataAccountUpdate = [
                 'username' => $request->get('username'),
+
             ];
             if(!is_null($password) && $password !== ''){
-                $dataAccountUpdate['password'] = Hash::make($password);
+                $dataUpdate['password'] = Hash::make($password);
             }
-            Account::where('staff_id' ,$staffId)->update($dataAccountUpdate);
+
+            Staff::where('id', $staffId)->update($dataUpdate);
 
             DB::commit();
-            if($path !== ""){
-                File::delete(public_path("storage/" . $pathOld));
-            }
             return redirect()->back()->with('success','Success');
         }catch (\Exception $e){
-            File::delete(public_path("storage/" . $path));
-            dd($e->getMessage());
             DB::rollBack();
             $error = Str::limit($e->getMessage(),40);
             return redirect()->back()->with('error','Update fail :'.$error );

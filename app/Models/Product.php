@@ -21,14 +21,23 @@ class Product extends Model
         'created_id',
         'tax_id',
         'center_id',
+        'estimated_delivery',
+        'number'
     ];
 
     public function category(){
         return $this->belongsTo(Category::class,'category_id','id');
     }
+    public function center(){
+        return $this->belongsTo(Center::class,'center_id','id');
+    }
 
     public function tax(){
         return $this->belongsTo(TaxProduct::class,'tax_id','id');
+    }
+
+    public function getCenterNameAttribute(){
+        return $this->center->name ?? "unknown";
     }
 
     public function getCategoryNameAttribute(){
@@ -36,5 +45,8 @@ class Product extends Model
     }
     public function getTaxNumberAttribute(){
         return $this->tax->number ?? "unknown";
+    }
+    public function getEstimateAttribute(){
+        return  !($this->estimated_delivery) ? now()->addDay($this->estimated_delivery)->toDateString() :  "unknown";
     }
 }

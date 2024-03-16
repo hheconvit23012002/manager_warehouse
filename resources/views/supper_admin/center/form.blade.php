@@ -24,7 +24,7 @@
 
                 @include('common.input-text',[
                     'name' => 'code',
-                    'label' => 'code',
+                    'label' => 'zip-code',
                     'required' => true,
                     'classParent' => 'form-group row',
                 ])
@@ -37,7 +37,6 @@
 
                 @include('common.input-text',[
                     'name' => 'address2',
-                    'required' => true,
                     'classParent' => 'form-group row',
                 ])
 
