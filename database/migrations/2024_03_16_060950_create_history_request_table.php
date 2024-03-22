@@ -16,8 +16,10 @@ class CreateHistoryRequestTable extends Migration
         Schema::create('history_request', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('request_id');
+            $table->string('status');
             $table->string('file')->nullable();
             $table->text('description')->nullable();
+            $table->foreign('request_id')->references('id')->on('order');
             $table->timestamps();
         });
     }

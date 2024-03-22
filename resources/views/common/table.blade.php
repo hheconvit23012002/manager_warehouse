@@ -47,7 +47,11 @@
                 @if(count($actions ?? []) > 0 )
                     <td>
                         @foreach($actions as $name)
-                            <button class="{{ $name['classButton'] ?? 'btn' }}" id="{{ $name['classButton'] ?? '' }}" data-id="{{ $value->id }}" onclick="{{ isset($name['onclick']) ? $name['onclick'] . '(' .$value->id.')' : '' }}">
+                            @php
+                                $hiddenCondition = $name['hiddenCondition'] ?? null;
+                                $hidden = is_null($hiddenCondition) ? false : $hiddenCondition($value);
+                            @endphp
+                            <button title="{{ $name['title'] ?? $name['onclick'] }}" class="{{ $name['classButton'] ?? 'btn' }} {{ $hidden ? 'd-none' : '' }}" id="{{ $name['classButton'] ?? '' }}" data-id="{{ $value->id }}" onclick="{{ isset($name['onclick']) ? $name['onclick'] . '(' .$value->id.')' : '' }}">
                                 <a class="{{ $name['classLink'] ?? 'link' }}" href="{{ ($name['router'] ?? null) ? route($name['router'], ['id' => $value->id]) : '#' }}">
                                     <i class="{{ $name['icon'] }}"></i>
                                 </a>

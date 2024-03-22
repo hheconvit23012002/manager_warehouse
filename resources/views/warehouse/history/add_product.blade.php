@@ -29,10 +29,10 @@
             <div class="tab-content">
                 @php
                     $fields = [
+                        'Code' => 'code',
                         'Image' => 'image_product',
-                        'Code Product' => 'code_product',
                         'Name' => 'name_product',
-                        'Measurement Unit' => 'measurement_unit_product',
+                        'Unit' => 'measurement_unit_product',
                         'Price' => 'price',
                         'Number' => 'number',
                         'Time add' => 'created_at',

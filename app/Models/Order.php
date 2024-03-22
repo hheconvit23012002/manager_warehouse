@@ -17,11 +17,20 @@ class Order extends Model
         'desc',
         'estimated_delivery_date',
         'status',
+        'code',
     ];
 
-    const STATUS_PENDING = 'status-pending';
-    const STATUS_ACCEPT = 'status-accept';
-    const STATUS_REJECT = 'status-reject';
+    const STATUS_PENDING = 'pending';
+    const STATUS_DELIVERY = 'delivery';
+    const STATUS_DONE = 'done';
+    const STATUS_REJECT = 'reject';
+
+    const STATUS_LIST = [
+        self::STATUS_PENDING => self::STATUS_PENDING,
+        self::STATUS_DELIVERY => self::STATUS_DELIVERY,
+        self::STATUS_DONE => self::STATUS_DONE,
+        self::STATUS_REJECT => self::STATUS_REJECT,
+    ];
 
     public function requester(){
         return $this->belongsTo(Center::class,'request_id','id');

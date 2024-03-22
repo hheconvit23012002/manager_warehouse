@@ -108,6 +108,7 @@ class ProductController extends Controller
         }catch (\Exception $e){
             File::delete(public_path("storage/" . $path));
             DB::rollBack();
+            dd($e);
             $error = Str::limit($e->getMessage(),40);
             return redirect()->back()->with('error','Create fail :'.$error );
         }

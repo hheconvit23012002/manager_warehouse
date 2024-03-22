@@ -24,12 +24,12 @@ class HistoryAddNumberProductController extends Controller
             $historyQuery = HistoryAddNumberProduct::query();
             $productQuery = Product::query();
             if($userLogin->position === Staff::POSITION_ADMIN_WAREHOUSE){
-                $historyQuery = $historyQuery->with([
-                    'product' => fn($query) => $query->where('center_id ', $centerId)
-                ])->with('product.center');
+                $historyQuery = $historyQuery->whereHas(
+                    'product', fn($query) => $query->where('center_id', $centerId)
+                )->with('product.center');
                 $productQuery = $productQuery->beLongsToCenter($centerId);
             }
-            $histories = $historyQuery->paginate(15);
+            $histories = $historyQuery->latest()->paginate(15);
             $products = $productQuery->get();
             return view('warehouse.history.add_product',
                 compact('histories',
@@ -47,10 +47,19 @@ class HistoryAddNumberProductController extends Controller
             $productId = $request->get('product_id');
             $number = $request->get('number');
             $product = Product::query()->where('id', $productId)->firstOrFail();
+            $startMonth = now()->startOfMonth();
+            $endMonth = now()->endOfMonth();
+            $numberInMonth = HistoryAddNumberProduct::query()
+                ->whereHas('product', fn($q) => $q->where('center_id',$product->center_id) )
+                ->whereBetween('created_at',[ $startMonth, $endMonth])
+                ->count('id');
+            $month = now()->month < 10 ? "0". now()->month : now()->month;
+            $code = now()->year . $month . $this->formatNumberHistory($numberInMonth+1);
             HistoryAddNumberProduct::create([
                 'product_id' => $productId,
                 'number' => $number,
-                'price' => $product->price
+                'price' => $product->price,
+                'code' => $code,
             ]);
             $product->number = $product->number + $number;
             $product->save();

@@ -77,6 +77,7 @@ Route::group([
        ],function (){
            Route::get('/',[RequestController::class,'index'])->name('index');
            Route::get('/{id}',[RequestController::class,'get'])->name('get');
+           Route::get('/process/{id}',[RequestController::class,'getProcessRequestById'])->name('getProcessRequestById');
            Route::post('/changeStatus',[RequestController::class,'changeStatus'])->name('changeStatus');
            Route::get('/exportRequestPdf/{id}',[RequestController::class,'exportPdf'])->name('exportRequestPdf');
        });

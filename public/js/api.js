@@ -101,6 +101,26 @@ let api = {
         }
         return rs;
     },
+    getProcessRequestById  : async (prop) => {
+        const {seller_id} = prop
+        let rs = {}
+        try{
+            await $.ajax({
+                url: `${baseUrl}admin/web/request/process/${seller_id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    rs = response
+                },
+                error: function (response) {
+                    // console.log(response);
+                }
+            })
+        }catch(e){
+
+        }
+        return rs;
+    },
     changeCart  : async (prop) => {
         const {product_id, seller_id, number} = prop
         let rs = {}

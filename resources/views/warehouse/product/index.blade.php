@@ -41,10 +41,11 @@
                         'Image' => 'image',
                         'Code' => 'code',
                         'Name' => 'name',
-                        'Measurement Unit' => 'measurement_unit',
+                        'Unit' => 'measurement_unit',
                         'Price' => 'price',
                         'Category' => 'category_name',
                         'Tax' => 'tax_number',
+                        'Number' => 'number'
                     ];
                     if($userLogin->position === Staff::POSITION_SUPPER_ADMIN){
                         $fields['center'] = 'center_name';

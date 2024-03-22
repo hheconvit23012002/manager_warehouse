@@ -1,3 +1,4 @@
+@php use App\Models\Order; @endphp
 @extends('layout.admin.master')
 
 @section('content')
@@ -5,13 +6,27 @@
         $action = [
             'export_pdf' => [
                 'icon' => 'fa-solid fa-file-export',
+                'title' => 'Export Order',
                 'router' => 'admin.web.request.exportRequestPdf',
+                'hiddenCondition' => fn($item) => $item->status !== Order::STATUS_DONE
+            ],
+            'export_delivery_note' => [
+                'icon' => 'fa-solid fa-download',
+                'title' => 'Export delivery note',
+                'router' => 'admin.web.request.exportRequestPdf',
+                'hiddenCondition' => fn($item) => $item->status === Order::STATUS_DONE
             ],
             'edit' => [
                 'icon' => 'fa-solid fa-pen',
                 'onclick' => 'openChangeStatus',
-                'title' => 'openChangeStatus'
+                'title' => 'openChangeStatus',
+                'hiddenCondition' => fn($item) => $item->status === Order::STATUS_DONE
             ],
+            'info' => [
+                'icon' => "fa-solid fa-circle-info",
+                'onclick' => 'openInfoOrder',
+                'title' => 'view info'
+            ]
         ]
     @endphp
     <div class="row">
@@ -29,10 +44,11 @@
             <div class="tab-content">
                 @include('common.table',[
                     'field' => [
+                        'Code'=>'code',
                         'Shop request' => 'request_name',
                         'Shipping Address' => 'shipping_address',
                         'Phone number' => 'phone_number',
-                        'Estimated delivery date' => 'estimated_delivery_date',
+                        'Estimated' => 'estimated_delivery_date',
                         'status' => 'status',
                     ],
                     'data' => $requests ?? [],
@@ -47,6 +63,11 @@
 
     @include('layout.admin.centerbar',[
         'modalTitle' => 'Change Status Request',
+    ])
+
+    @include('warehouse.request.info',[
+        'idModal' => 'info_request',
+        'modalTitle' => 'Process Request',
     ])
 @endsection
 @push('js')

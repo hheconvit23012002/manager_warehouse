@@ -2,7 +2,14 @@
 
     @php
 
-        use App\Models\Staff;$superAdmin = [
+        use App\Models\Order;use App\Models\Staff;use Illuminate\Support\Facades\Auth;
+        $userLogin = Auth::user();
+        $queryRequest = Order::query()->where('status', Order::STATUS_PENDING);
+        if(!is_null($userLogin->center_id)){
+            $queryRequest = $queryRequest->where('seller_id', $userLogin->center_id);
+        }
+        $numberRequest = $queryRequest->count('id');
+        $superAdmin = [
             [
                 'name' => 'Staff',
                 'route' => 'admin.web.staff.index',
@@ -18,7 +25,7 @@
                 'route' => 'admin.web.product.index',
             ],
             [
-                'name' => 'Request',
+                'name' => 'Request' . ($numberRequest > 0 ?' ('.$numberRequest.') ' : ''),
                 'route' => 'admin.web.request.index',
             ],
             [

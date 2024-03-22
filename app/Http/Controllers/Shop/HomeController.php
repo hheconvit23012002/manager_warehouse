@@ -94,7 +94,6 @@ class HomeController extends Controller
                 'number' => $number
             ],'Cart added successfully');
         }catch (\Exception $e){
-            dd($e);
             DB::rollBack();
             $error = Str::limit($e->getMessage(),40);
             return $this->errorResponse($error);
@@ -103,8 +102,8 @@ class HomeController extends Controller
 
     public function getInfoCheckOut(Request $request, $sellerId){
         try {
-            $userLogin = \session()->get('user');
-            $requestId = $userLogin->centerId;
+            $userLogin = Auth::user();
+            $requestId = $userLogin->center_id;
             $cart = Cart::with('products')
                 ->where('seller_id', $sellerId)
                 ->where('request_id', $requestId)
@@ -127,20 +126,29 @@ class HomeController extends Controller
     public function checkout(Request $request){
         try {
             DB::beginTransaction();
-            $userLogin = \session()->get('user');
-            $requestId = $userLogin->centerId;
+            $userLogin = Auth::user();
+            $requestId = $userLogin->center_id;
             $sellerId = $request->get('seller_id');
             $cart = Cart::with('products','products.tax')
                 ->where('seller_id', $sellerId)
                 ->where('request_id', $requestId)
                 ->firstOrFail();
+            $startMonth = now()->startOfMonth();
+            $endMonth = now()->endOfMonth();
+            $numberInMonth = Order::query()
+                ->where('seller_id', $sellerId )
+                ->whereBetween('created_at',[ $startMonth, $endMonth])
+                ->count('id');
+            $month = now()->month < 10 ? "0". now()->month : now()->month;
+            $code = "ord-" . now()->year . $month . $this->formatNumberRequest($numberInMonth+1);
             $order = Order::create([
                 'request_id' => $requestId,
                 'shipping_address' => $request->get('shipping_address'),
                 'seller_id' => $sellerId,
                 'phone_number' => $request->get('phone_number'),
                 'desc' => $request->get('desc'),
-                'status' => Order::STATUS_PENDING
+                'status' => Order::STATUS_PENDING,
+                'code' =>$code
             ]);
             $cartDetail = [];
             foreach ($cart->products as $product){
@@ -158,6 +166,7 @@ class HomeController extends Controller
             DB::commit();
             return redirect()->back()->with('success','success');
         }catch (\Exception $e){
+            dd($e);
             DB::rollBack();
             $error = Str::limit($e->getMessage(),40);
             return redirect()->back()->with('error',$error);
